@@ -1,2 +1,2 @@
-# wedding-game
+# Wedding Runner
 Game for wedding
