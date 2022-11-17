@@ -1,8 +1,8 @@
 window.addEventListener('load', function() {
     const canvas = this.document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 720;
+    const CANVAS_WIDTH = canvas.width = 800;
+    const CANVAS_HEIGHT = canvas.height = 720;
 
     const textDisplay = this.document.getElementById('textDisplay');
     const rButton = this.document.getElementById('rightButton');
@@ -21,38 +21,24 @@ window.addEventListener('load', function() {
         console.log("Left")
     }
 
-    class InputHandler {
-        constructor(){
-            this.keys = []
-            window.addEventListener('keydown', e => {
-                console.log(e.key);
-            });
-        }
-    }
-
-    class Player {
-
-    }
-
-    class Background {
-
-    }
-
-    class Enemy {
-
-    }
-
-    function handleEnemies(){
-
-    }
-
-    function displayStatusText(){
-
-    }
-
-    const input = new InputHandler();
+    const playerImage = new Image();
+    playerImage.src = 'groom_frames/idlesheet2.png';
+    const spriteWidth = 650;
+    const spriteHeight = 650;
+    let frameX = 0;
+    let frameY = 0;
+    let gameFrame = 5;
+    const staggerFrames = 7;
 
     function animate(){
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        let position = Math.floor(gameFrame/staggerFrames) % 13;
+        frameX = spriteWidth * position;
+        ctx.drawImage(playerImage, frameX, frameY * spriteHeight, spriteWidth,
+            spriteHeight, 0, 0, spriteWidth, spriteHeight);
 
+        gameFrame++;
+        requestAnimationFrame(animate);
     }
+    animate();
 });
