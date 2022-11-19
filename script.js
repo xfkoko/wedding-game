@@ -5,18 +5,25 @@ window.addEventListener('load', function() {
     const CANVAS_HEIGHT = canvas.height = 1300;
 
     const rightArrow = new Image();
-    rightArrow.src = 'arrow_frames/rightpassive.png';
     const leftArrow = new Image();
-    leftArrow.src = 'arrow_frames/leftpassive.png';
     const redRightArrow = new Image();
-    redRightArrow.src = 'arrow_frames/rightactive.png';
     const redLeftArrow = new Image();
+    const clickedRightArrow = new Image();
+    const clickedLeftArrow = new Image();
+    rightArrow.src = 'arrow_frames/rightpassive.png';
+    leftArrow.src = 'arrow_frames/leftpassive.png';
+    redRightArrow.src = 'arrow_frames/rightactive.png';
     redLeftArrow.src = 'arrow_frames/leftactive.png';
+    clickedRightArrow.src = 'arrow_frames/rightclicked.png';
+    clickedLeftArrow.src = 'arrow_frames/leftclicked.png';
     const R_ARROW_X = 1675;
     const R_ARROW_Y = 880
     const L_ARROW_X = 1168;
     const L_ARROW_Y = 880;
     let needNewArrow = true;
+    let rPressed = false;
+    let lPressed = false;
+    let pressedCounter = 0;
     let correctArrow = "";
     let rArrow = rightArrow;
     let lArrow = leftArrow;
@@ -34,7 +41,7 @@ window.addEventListener('load', function() {
             if (correctArrow === "Right") {
                 if (isInside(mousePos, rightArrow, R_ARROW_X, R_ARROW_Y)) {
                     //console.log("RIGHT: R_ARROW");
-                    needNewArrow = true;
+                    rPressed = true;
                     if (frameY === 0) {
                         frameY = 1;
                         speed = 1;
@@ -48,7 +55,8 @@ window.addEventListener('load', function() {
                 } else {
                     //console.log("Clicked wrong place");
                     if (frameY !== 0) {
-                        speed = speed - 3;
+                        speed = speed - 5;
+                        if (speed < 0 ) speed = 0;
                         if (staggerFrames >= 6 && speed < 1) frameY = 0;
                         else if (speed < 1) {
                             staggerFrames++;
@@ -59,7 +67,7 @@ window.addEventListener('load', function() {
             } else {
                 if (isInside(mousePos, leftArrow, L_ARROW_X, L_ARROW_Y)) {
                     //console.log("RIGHT: L_ARROW");
-                    needNewArrow = true;
+                    lPressed = true;
                     if (frameY === 0) {
                         frameY = 1;
                         speed = 1;
@@ -73,7 +81,8 @@ window.addEventListener('load', function() {
                 } else {
                     //console.log("Clicked wrong place");
                     if (frameY !== 0) {
-                        speed = speed - 3;
+                        speed = speed - 5;
+                        if (speed < 0 ) speed = 0;
                         if (staggerFrames >= 6 && speed < 1) frameY = 0;
                         else if (speed < 1) {
                             staggerFrames++;
@@ -92,10 +101,26 @@ window.addEventListener('load', function() {
     this.window.addEventListener('keydown', function(e) {
         console.log(e.keyCode);
         if (e.keyCode === 32) {
+            speed = 0;
+            speedScore = 0;
             frameY = 0;
             staggerFrames = 6;
         }
     })
+
+    function sleep(delay) {
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + delay);
+    }
+
+    const backgroundLayer1 = new Image();
+    backgroundLayer1.src ="background001.png";
+
+    const SOMETHING = 13000;
+    let x = 0;
+    let questionTime1 = 0;
+    let questionTime2 = 0;
+    let questionTime3 = 0;
 
     const playerImage = new Image();
     playerImage.src = 'groom_frames/animations.png';
@@ -126,6 +151,25 @@ window.addEventListener('load', function() {
 
     function animate(){
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        if (-x > 10000 && questionTime1 != 2) {
+            questionTime1 = 1;
+        }
+        ctx.drawImage(backgroundLayer1, x, 0);
+        if (questionTime1 === 1 || questionTime2 === 1 || questionTime3 === 1) {
+            speed = 0;
+            speedScore = 0;
+            staggerFrames = 6;
+            frameY = 0;
+            needNewArrow = false;
+            rArrow = rightArrow;
+            lArrow = leftArrow;
+        } else {
+            if (x < -SOMETHING) x = -speedScore/3;
+            else x -= speedScore/3;
+        }
+        ctx.font = "100px Arial";
+        ctx.fillText("X: " + Math.round(-x), 0, 100);
         if (frameY === 0) {
             divider = 26;
         } else {
@@ -133,8 +177,22 @@ window.addEventListener('load', function() {
         }
         let position = Math.floor(gameFrame/staggerFrames) % divider;
         frameX = spriteWidth * position;
-        
-        if (needNewArrow) {
+        if(rPressed) {
+            if (pressedCounter > 10) {
+                pressedCounter = 0;
+                rPressed = false;
+                needNewArrow = true;
+            } else pressedCounter++;
+            rArrow = clickedRightArrow;
+        } else if (lPressed) {
+            if (pressedCounter > 10) {
+                pressedCounter = 0;
+                lPressed = false;
+                needNewArrow = true;
+            } else pressedCounter++;
+            lArrow = clickedLeftArrow;
+        }
+        else if (needNewArrow) {
             needNewArrow = false;
             correctArrow = randomArrow();
             if (correctArrow === "Right") {
