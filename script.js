@@ -1,21 +1,76 @@
-window.addEventListener('load', function() {
+async function postScore(score, name) {
+    console.log(name + ":", score);
+    const response = await fetch("http://localhost:3000/newscore", {
+        method: 'POST',
+        body: JSON.stringify({
+            "name": name,
+            "score": score,
+    }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    console.log("Status of new score sent:", response.status);
+}
+
+async function getTopList() {
+    const response = await fetch("http://localhost:3000/top10");
+    var data = await response.json();
+    return data;
+}
+
+var playerName = "Sulho" + Math.floor(Math.random() * 9999);
+const inputHandler = function(e) {
+    playerName = e.target.value;
+}
+
+window.addEventListener('load', async function() {
+    async function updateTopList() {
+        var topList = await getTopList();
+        for (var i in topList.top10) {
+            this.document.getElementById("position" + (parseInt(i) + 1)).innerHTML = topList.top10[i].name + ": " + topList.top10[i].score
+        }
+    }
+
+    await updateTopList();
     const canvas = this.document.getElementById('canvas1');
+    const playerNameInput = this.document.getElementById('playername');
+    const hiscores = this.document.getElementById('hiscores');
     const ctx = canvas.getContext('2d');
     const CANVAS_WIDTH = canvas.width = 1440;
     const CANVAS_HEIGHT = canvas.height = 720;
+    playerNameInput.value = playerName;
+    var docElem = this.document.documentElement;
+    var topOffset = (docElem.clientHeight - canvas.clientHeight)/2;
+    var leftOffset = (docElem.clientWidth - canvas.clientWidth)/2;
+    playerNameInput.style.top = topOffset + canvas.clientHeight/1.52 + "px";
+    playerNameInput.style.left = leftOffset + canvas.clientWidth/2.43 + "px";
+    playerNameInput.style.fontSize = canvas.clientWidth/35 + "px";
+    playerNameInput.addEventListener('input', inputHandler);
+
+    hiscores.style.top = topOffset + canvas.clientHeight/7 + "px";
+    hiscores.style.left = leftOffset + canvas.clientWidth/40 + "px";
+    hiscores.style.fontSize = canvas.clientWidth/37 + "px";
+
+    CANVAS_SCALE = CANVAS_WIDTH/canvas.clientWidth;
+
+    /*const miscSheet = new Image();
+    miscSheet.src = 'menus/miscsheet.png';*/
 
     const mainMenu = new Image();
     mainMenu.src = 'menus/menu001.png';
+    const startButton = new Image();
+    startButton.src = 'menus/menustart001.png';
+    const top10Menu = new Image();
+    top10Menu.src = 'menus/top10menu.png';
 
     const endMenu = new Image();
     endMenu.src = 'menus/endmenu.png';
+    const timeOutMenu = new Image();
+    timeOutMenu.src = 'menus/timeoutmenu.png';
     const newGameButton = new Image();
     newGameButton.src = 'menus/newgame.png';
 
-    // Answer positions:
-    //
-    // 1. | 3.
-    // 2. | 4.
     const questionMenu = new Image();
     const answerImage1 = new Image();
     const answerImage2 = new Image();
@@ -38,9 +93,6 @@ window.addEventListener('load', function() {
     let needQuestion = false;
     let questionSelected;
     let questionPhase = false;
-    
-    const startButton = new Image();
-    startButton.src = 'menus/menustart001.png';
 
     const resultImage = new Image();
     let showResult = false;
@@ -77,18 +129,16 @@ window.addEventListener('load', function() {
 
     let speedScore = 0;
 
-    let score = 50000;
+    let score = 20000;
 
     // { MENU, PLAYING, END} something else?
     let gameState = "MENU";
 
-    console.log(rightArrow.height);
-
-    canvas.addEventListener('click', function(e) {
+    canvas.addEventListener('click', async function(e) {
         mousePos = getMousePos(canvas, e);
         if (gameState === "PLAYING") {
             if (gameAtEnd) {
-                endScreenClick();
+                await endScreenClick();
             }
             else if (questionTime1 === 1 || questionTime2 === 1 || questionTime3 === 1) {
                 questionClick();
@@ -97,7 +147,7 @@ window.addEventListener('load', function() {
         }
         else if (gameState === "MENU") menuClick();
         else console.log("END/OTHER CLICK");
-    })
+    }, false)
 
     function menuClick() {
         let w = (CANVAS_WIDTH - mainMenu.width);
@@ -106,15 +156,18 @@ window.addEventListener('load', function() {
             gameState = "PLAYING";
             gameAtEnd = false;
             needNewArrow = true;
+            playerNameInput.type = "hidden";
+            hiscores.style.visibility = "hidden";
         }
         else console.log("Is NOT inside start");
     }
 
-    function endScreenClick() {
+    async function endScreenClick() {
         let w = (CANVAS_WIDTH - endMenu.width);
         let h = (CANVAS_HEIGHT - endMenu.height)
-        if(isInside(mousePos, newGameButton, w/1.6, h/0.75)) {
-            gameReset();
+        if(isInside(mousePos, newGameButton, w/1.6, h/0.725)) {
+            postScore(score, playerName);
+            await gameReset();
         }
         else console.log("Is NOT inside new game");
     }
@@ -222,12 +275,12 @@ window.addEventListener('load', function() {
         } else console.log("Speed Score: ", speedScore);
     }
 
-    function gameReset(){
+    async function gameReset(){
         speed = 0;
         speedScore = 0;
         frameY = 0;
         staggerFrames = 6;
-        score = 50000;
+        score = 20000;
         x = 0;
         questionTime1 = 0;
         questionTime2 = 0;
@@ -239,6 +292,7 @@ window.addEventListener('load', function() {
         showResult = false;
         showCounter = 0;
         gameAtEnd = false;
+        await updateTopList();
     }
 
     // ONLY FOR DEBUGGING
@@ -261,6 +315,9 @@ window.addEventListener('load', function() {
     const backgroundLayer1 = new Image();
     backgroundLayer1.src ="background001.png";
 
+    const backgroundLayer2 = new Image();
+    backgroundLayer2.src ="background002.png";
+
     const SOMETHING = 28806;
     let x = 0;
     let questionTime1 = 0;
@@ -280,8 +337,8 @@ window.addEventListener('load', function() {
     function getMousePos(canvas, event) {
         var rect = canvas.getBoundingClientRect();
         return {
-            x: event.clientX - rect.left,
-            y: event.clientY - rect.top
+            x: (event.clientX - rect.left) * CANVAS_SCALE,
+            y: (event.clientY - rect.top) * CANVAS_SCALE
         };
     }
 
@@ -307,15 +364,30 @@ window.addEventListener('load', function() {
     }
 
     function menuAnimation() {
-        ctx.drawImage(backgroundLayer1, 0, 0);
+        ctx.drawImage(backgroundLayer2, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         let w = (CANVAS_WIDTH - mainMenu.width);
-        let h = (CANVAS_HEIGHT - mainMenu.height)
+        let h = (CANVAS_HEIGHT - mainMenu.height);
         ctx.drawImage(mainMenu, w/2, h/2);
         ctx.drawImage(startButton, w/2 + w/20, h/2 + h/1.8);
+        ctx.drawImage(top10Menu, w/50, h/10)
+        if (playerNameInput.type == "hidden") {
+            ctx.font = "60px Amatic SC";
+            playerNameInput.value = playerName;
+            playerNameInput.type = "text";
+            hiscores.style.visibility = "visible";
+        }
     }
 
     function gameAnimation() {
+        console.time("test")
         if (-x > 27200) {
+            gameAtEnd = true;
+            speed = 0;
+            speedScore = 0;
+            staggerFrames = 6;
+            frameY = 0;
+            needNewArrow = false;
+        } else if (score <= 0) {
             gameAtEnd = true;
             speed = 0;
             speedScore = 0;
@@ -344,10 +416,12 @@ window.addEventListener('load', function() {
                 questionPhase = true;
             }
         }
+        ctx.putImageData(ctx.getImageData(x, 0, CANVAS_WIDTH, CANVAS_HEIGHT), 0, 0, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        
         ctx.drawImage(backgroundLayer1, x, 0);
-        ctx.font = "50px Arial";
-        ctx.fillText("X: " + Math.round(-x), 0, 50);
-        ctx.fillText("Score: " + score, 250, 50);
+        ctx.font = "50px Amatic SC";
+        ctx.fillText("X: " + Math.round(-x), 250, 50);
+        ctx.fillText("Score: " + score, 10, 50);
         if (frameY === 0) {
             divider = 26;
         } else {
@@ -360,7 +434,7 @@ window.addEventListener('load', function() {
             lArrow = redLeftArrow;
         } else {
             if(rPressed) {
-                if (pressedCounter > 10) {
+                if (pressedCounter > 5) {
                     pressedCounter = 0;
                     rPressed = false;
                     needNewArrow = true;
@@ -435,12 +509,18 @@ window.addEventListener('load', function() {
         }
         if (gameAtEnd) {
             let w = (CANVAS_WIDTH - endMenu.width);
-            let h = (CANVAS_HEIGHT - endMenu.height)
-            ctx.drawImage(endMenu, w/2, h/2);
-            ctx.drawImage(newGameButton, w/1.6, h/0.75);
-            ctx.fillText(score, CANVAS_WIDTH/2.2, CANVAS_HEIGHT/1.92);
+            let h = (CANVAS_HEIGHT - endMenu.height);
+            if (score <= 0) {
+                ctx.drawImage(timeOutMenu, w/2, h/2);
+            } else {
+                ctx.drawImage(endMenu, w/2, h/2);
+                ctx.font = "60px Amatic SC"
+                ctx.fillText(score, CANVAS_WIDTH/2.15, CANVAS_HEIGHT/1.9);
+            }
+            ctx.drawImage(newGameButton, w/1.6, h/0.725);
         }
         gameFrame++;
+        console.timeEnd("test")
     }
     animate();
 });

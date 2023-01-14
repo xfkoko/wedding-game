@@ -1,0 +1,10 @@
+Arrows: 170x170
+--------------------
+
+Grid = 550x550
+
+Menus: 542x417
+Startbutton: 458x89
+Newgamebutton: 313x128
+rightanswer: 206x241
+wronganswer: 175x267

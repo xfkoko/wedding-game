@@ -1,3 +1,8 @@
+html, body {
+    width: 100vh;
+    height: 100vh;
+    overflow: hidden;
+}
 body {
     background: black;
 }
@@ -6,29 +11,35 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
+    margin-right: 50%;
     transform: translate(-50%, -50%);
-    border: 5px solid white;
+    max-width: 100%;
+    max-height: 100%;
 }
-#rightButton, #leftButton {
-    background: grey;
+#playername {
     position: absolute;
-    top: 80%;
-    transform: translate(-50%, -50%);
+    font-family: "Amatic SC";
 }
-#rightButton {
-    left: 55%;
+#hiscores {
+    position: absolute;
+    font-family: "Amatic SC";
+    visibility: visible;
 }
-#leftButton {
-    left: 45%;
+#position1 {
+    color: black;
+    background-color: gold;
+    border-radius: 10px;
+    padding: 1px;
 }
-#playerImage, #backgroundImage, #enemyImage {
-    display: none;
+#position2 {
+    color: black;
+    background-color: silver;
+    border-radius: 10px;
+    padding: 1px;
 }
-#textDisplay {
-    position: fixed;
-    background: white;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 30px;
+#position3 {
+    color: black;
+    background-color: brown;
+    border-radius: 10px;
+    padding: 1px;
 }
