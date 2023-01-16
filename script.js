@@ -1,6 +1,6 @@
 async function postScore(score, name) {
     console.log(name + ":", score);
-    const response = await fetch("http://localhost:80/newscore", {
+    const response = await fetch("http://localhost:3000/newscore", {
         method: 'POST',
         body: JSON.stringify({
             "name": name,
@@ -14,7 +14,7 @@ async function postScore(score, name) {
 }
 
 async function getTopList() {
-    const response = await fetch("http://localhost:80/top10");
+    const response = await fetch("http://localhost:3000/top10");
     var data = await response.json();
     return data;
 }
