@@ -278,7 +278,7 @@ window.addEventListener('load', async function() {
         speedScore = 0;
         frameY = 0;
         staggerFrames = 6;
-        score = 500;
+        score = 2000;
         x = 0;
         questionTime1 = 0;
         questionTime2 = 0;
