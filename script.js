@@ -442,7 +442,7 @@ window.addEventListener('load', async function() {
         else {
             ctx.drawImage(backgroundPart1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }*/
-        ctx.drawImage(backgroundLayer1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        //ctx.drawImage(backgroundLayer1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         ctx.font = "50px Amatic SC";
         ctx.fillText("X: " + Math.round(-x), 250, 50);
         ctx.fillText("Score: " + score, 10, 50);
