@@ -360,11 +360,27 @@ window.addEventListener('load', async function() {
         else return "Left";
     }
 
-    function animate(){
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        if (gameState === "PLAYING") gameAnimation();
-        else if (gameState === "MENU") menuAnimation();
+
+    var fpsInterval, startTime, now, then, elapsed;
+    function startAnimating(fps) {
+        fpsInterval = 1000 / fps;
+        then = Date.now();
+        startTime = then;
+        animate();
+    }    
+
+    function animate() {
         requestAnimationFrame(animate);
+        now = Date.now();
+        elapsed = now - then;
+        if (elapsed > fpsInterval) {
+            // Get ready for next frame by setting then=now, but also adjust for your
+            // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+            then = now - (elapsed % fpsInterval);
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            if (gameState === "PLAYING") gameAnimation();
+            else if (gameState === "MENU") menuAnimation();
+        }
     }
 
     function menuAnimation() {
@@ -421,7 +437,7 @@ window.addEventListener('load', async function() {
             }
         }
         // Background logic: divided into 4 sections as one big caused lag
-        /*if(-x > (5760 + CANVAS_WIDTH)*3) {
+        if(-x > (5760 + CANVAS_WIDTH)*3) {
             ctx.drawImage(backgroundPart4, -x - (5760 + CANVAS_WIDTH)*3, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         } else if(questionTime3 != 0) {
             ctx.drawImage(backgroundPart3, -x - (5760*2 + CANVAS_WIDTH*2), 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -441,7 +457,7 @@ window.addEventListener('load', async function() {
         }
         else {
             ctx.drawImage(backgroundPart1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        }*/
+        }
         //ctx.drawImage(backgroundLayer1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         ctx.font = "50px Amatic SC";
         ctx.fillText("X: " + Math.round(-x), 250, 50);
@@ -548,5 +564,5 @@ window.addEventListener('load', async function() {
         gameFrame++;
         //console.timeEnd("test")
     }
-    animate();
+    startAnimating(25);
 });
