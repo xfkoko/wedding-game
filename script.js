@@ -1,6 +1,6 @@
 async function postScore(score, name) {
     console.log(name + ":", score);
-    const response = await fetch("http://localhost:3000/newscore", {
+    const response = await fetch("http://localhost:80/newscore", {
         method: 'POST',
         body: JSON.stringify({
             "name": name,
@@ -14,7 +14,7 @@ async function postScore(score, name) {
 }
 
 async function getTopList() {
-    const response = await fetch("http://localhost:3000/top10");
+    const response = await fetch("http://localhost:80/top10");
     var data = await response.json();
     return data;
 }
@@ -54,9 +54,6 @@ window.addEventListener('load', async function() {
 
     CANVAS_SCALE = CANVAS_WIDTH/canvas.clientWidth;
 
-    /*const miscSheet = new Image();
-    miscSheet.src = 'menus/miscsheet.png';*/
-
     const mainMenu = new Image();
     mainMenu.src = 'menus/menu001.png';
     const startButton = new Image();
@@ -76,18 +73,17 @@ window.addEventListener('load', async function() {
     const answerImage2 = new Image();
     const answerImage3 = new Image();
     const answerImage4 = new Image();
-    const QUESTIONS= {
-        Q1: {
-            question: "questions/q1.png",
-            answers: ["questions/q1a1.png", "questions/q1a2.png", "questions/q1a3.png", "questions/q1a4.png"],
-            correct: "questions/q1a3.png"
-        },
-        Q2: {
-            question: "questions/q2.png",
-            answers: ["questions/q2a1.png", "questions/q2a2.png", "questions/q2a3.png", "questions/q2a4.png"],
-            correct: "questions/q2a3.png"
-        },
+    const QAMOUNT = 9;
+    var QUESTIONS = []
+    for (var i = 1; i <= QAMOUNT; i++) {
+        QUESTIONS.push({
+            question: "questions/q" + i + ".png",
+            answers: ["questions/q" + i + "a1.png", "questions/q" + i + "a2.png", "questions/q" + i + "a3.png", "questions/q" + i + "a4.png"],
+            correct: "questions/q" + i + "a1.png"
+        });
     }
+
+    var questionsNotUsed = QUESTIONS.slice();
     let needPositions = true;
     let correctAnswer;
     let needQuestion = false;
@@ -198,6 +194,7 @@ window.addEventListener('load', async function() {
             score += 1000;
             resultImage.src = "menus/rightanswer.png";
             showResult = true;
+            playerImage.src = 'groom_frames/animationsf_scaled.png';
         } else if (clicked > 0 ) {
             console.log("Wrong answer!");
             if (questionTime1 === 1) questionTime1 = 2;
@@ -209,6 +206,7 @@ window.addEventListener('load', async function() {
             score -= 1000;
             resultImage.src = "menus/wronganswer.png";
             showResult = true;
+            playerImage.src = 'groom_frames/animationsf_scaled.png';
         }
         else console.log("Click missed answer fields.");
     }
@@ -280,7 +278,7 @@ window.addEventListener('load', async function() {
         speedScore = 0;
         frameY = 0;
         staggerFrames = 6;
-        score = 20000;
+        score = 500;
         x = 0;
         questionTime1 = 0;
         questionTime2 = 0;
@@ -292,6 +290,8 @@ window.addEventListener('load', async function() {
         showResult = false;
         showCounter = 0;
         gameAtEnd = false;
+        questionsNotUsed = QUESTIONS.slice();
+        playerImage.src = 'groom_frames/animations_scaled.png';
         await updateTopList();
     }
 
@@ -312,8 +312,14 @@ window.addEventListener('load', async function() {
         }
     })
 
-    const backgroundLayer1 = new Image();
-    backgroundLayer1.src ="background001.png";
+    const backgroundPart1 = new Image();
+    backgroundPart1.src ="backgroundpart001.png";
+    const backgroundPart2 = new Image();
+    backgroundPart2.src ="backgroundpart002.png";
+    const backgroundPart3 = new Image();
+    backgroundPart3.src ="backgroundpart003.png";
+    const backgroundPart4 = new Image();
+    backgroundPart4.src ="backgroundpart004.png";
 
     const backgroundLayer2 = new Image();
     backgroundLayer2.src ="background002.png";
@@ -351,11 +357,6 @@ window.addEventListener('load', async function() {
         else return "Left";
     }
 
-    var randomProperty = function (obj) {
-        var keys = Object.keys(obj);
-        return obj[keys[ keys.length * Math.random() << 0]];
-    };
-
     function animate(){
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         if (gameState === "PLAYING") gameAnimation();
@@ -379,7 +380,7 @@ window.addEventListener('load', async function() {
     }
 
     function gameAnimation() {
-        console.time("test")
+        //console.time("test")
         if (-x > 27200) {
             gameAtEnd = true;
             speed = 0;
@@ -397,28 +398,47 @@ window.addEventListener('load', async function() {
         } else {
             score--;
         }
-        if (-x > 5750 && questionTime1 != 2) {
+        if (-x > 5760 && questionTime1 != 2) {
             questionTime1 = 1;
             if (!questionPhase) {
                 needQuestion = true;
                 questionPhase = true;
             }
-        } else if (-x > 13100 && questionTime2 != 2) {
+        } else if (-x > 11520 + CANVAS_WIDTH && questionTime2 != 2) {
             questionTime2 = 1;
             if (!questionPhase) {
                 needQuestion = true;
                 questionPhase = true;
             }
-        } else if (-x > 20600 && questionTime3 != 2) {
+        } else if (-x > 17280 + CANVAS_WIDTH*2  && questionTime3 != 2) {
             questionTime3 = 1;
             if (!questionPhase) {
                 needQuestion = true;
                 questionPhase = true;
             }
         }
-        ctx.putImageData(ctx.getImageData(x, 0, CANVAS_WIDTH, CANVAS_HEIGHT), 0, 0, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        
-        ctx.drawImage(backgroundLayer1, x, 0);
+        // Background logic: divided into 4 sections as one big caused lag
+        if(-x > (5760 + CANVAS_WIDTH)*3) {
+            ctx.drawImage(backgroundPart4, -x - (5760 + CANVAS_WIDTH)*3, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        } else if(questionTime3 != 0) {
+            ctx.drawImage(backgroundPart3, -x - (5760*2 + CANVAS_WIDTH*2), 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.drawImage(backgroundPart4, 0, 0, CANVAS_WIDTH + (-x-5760*3), CANVAS_HEIGHT, 0 + (CANVAS_WIDTH*3 - (-x-5760*3)), 0, CANVAS_WIDTH + (-x-5760*3), CANVAS_HEIGHT);
+        }
+        else if(-x > (5760 + CANVAS_WIDTH)*2) {
+            ctx.drawImage(backgroundPart3, -x - (5760 + CANVAS_WIDTH)*2, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        } else if(questionTime2 != 0) {
+            ctx.drawImage(backgroundPart2, -x - (5760 + CANVAS_WIDTH), 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.drawImage(backgroundPart3, 0, 0, CANVAS_WIDTH + (-x-5760*2), CANVAS_HEIGHT, 0 + (CANVAS_WIDTH*2 - (-x-5760*2)), 0, CANVAS_WIDTH + (-x-5760*2), CANVAS_HEIGHT);
+        }
+        else if(-x > (5760 + CANVAS_WIDTH)) {
+            ctx.drawImage(backgroundPart2, -x - (5760 + CANVAS_WIDTH), 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        } else if(questionTime1 != 0) {
+            ctx.drawImage(backgroundPart1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.drawImage(backgroundPart2, 0, 0, CANVAS_WIDTH + (-x-5760), CANVAS_HEIGHT, 0 + (CANVAS_WIDTH - (-x-5760)), 0, CANVAS_WIDTH + (-x-5760), CANVAS_HEIGHT);
+        }
+        else {
+            ctx.drawImage(backgroundPart1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        }
         ctx.font = "50px Amatic SC";
         ctx.fillText("X: " + Math.round(-x), 250, 50);
         ctx.fillText("Score: " + score, 10, 50);
@@ -475,7 +495,9 @@ window.addEventListener('load', async function() {
         }
         if (questionTime1 === 1 || questionTime2 === 1 || questionTime3 === 1) {
             if (needQuestion) {
-                questionSelected = randomProperty(QUESTIONS);
+                var questionIndex = Math.floor(Math.random() * questionsNotUsed.length);
+                questionSelected = questionsNotUsed[questionIndex];
+                questionsNotUsed.splice(questionIndex, 1);
                 questionMenu.src = questionSelected.question;
                 needQuestion = false;
             }
@@ -520,7 +542,7 @@ window.addEventListener('load', async function() {
             ctx.drawImage(newGameButton, w/1.6, h/0.725);
         }
         gameFrame++;
-        console.timeEnd("test")
+        //console.timeEnd("test")
     }
     animate();
 });

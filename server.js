@@ -1,11 +1,13 @@
 const express = require('express');
 const fs = require('fs').promises;
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-const port = 3000;
+const port = 80;
+app.use(express.static(__dirname));
 
 function updateTopList(body, obj) {
     if (obj.top10.length < 10) {
@@ -38,13 +40,13 @@ async function getTopListInOrder() {
 }
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
+    res.sendFile(path.join(__dirname, '/index.html'));
+});
 
 app.get('/top10', async (req, res) => {
     var topList = await getTopListInOrder();
     res.json({"top10": topList});
-})
+});
 
 app.post('/newscore', async (req, res) => {
     const body = req.body;
@@ -56,8 +58,8 @@ app.post('/newscore', async (req, res) => {
     await fs.writeFile("scores.json", JSON.stringify(obj, null, 4));
     res.status(200);
     res.send('OK');
-})
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
-})
+});
