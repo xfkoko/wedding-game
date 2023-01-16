@@ -1,6 +1,6 @@
 async function postScore(score, name) {
     console.log(name + ":", score);
-    const response = await fetch("http://16.170.143.115:3000/newscore", {
+    const response = await fetch(/*"http://localhost:3000/top10"*/"http://16.170.143.115:3000/newscore", {
         method: 'POST',
         body: JSON.stringify({
             "name": name,
@@ -14,7 +14,7 @@ async function postScore(score, name) {
 }
 
 async function getTopList() {
-    const response = await fetch("http://16.170.143.115:3000/top10");
+    const response = await fetch(/*"http://localhost:3000/top10"*/"http://16.170.143.115:3000/top10");
     var data = await response.json();
     return data;
 }
@@ -321,6 +321,9 @@ window.addEventListener('load', async function() {
     const backgroundPart4 = new Image();
     backgroundPart4.src ="backgroundpart004.png";
 
+    const backgroundLayer1 = new Image();
+    backgroundLayer1.src ="background001.png";
+
     const backgroundLayer2 = new Image();
     backgroundLayer2.src ="background002.png";
 
@@ -418,7 +421,7 @@ window.addEventListener('load', async function() {
             }
         }
         // Background logic: divided into 4 sections as one big caused lag
-        if(-x > (5760 + CANVAS_WIDTH)*3) {
+        /*if(-x > (5760 + CANVAS_WIDTH)*3) {
             ctx.drawImage(backgroundPart4, -x - (5760 + CANVAS_WIDTH)*3, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         } else if(questionTime3 != 0) {
             ctx.drawImage(backgroundPart3, -x - (5760*2 + CANVAS_WIDTH*2), 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -438,7 +441,8 @@ window.addEventListener('load', async function() {
         }
         else {
             ctx.drawImage(backgroundPart1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        }
+        }*/
+        ctx.drawImage(backgroundLayer1, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         ctx.font = "50px Amatic SC";
         ctx.fillText("X: " + Math.round(-x), 250, 50);
         ctx.fillText("Score: " + score, 10, 50);
