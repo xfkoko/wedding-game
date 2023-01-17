@@ -13,8 +13,7 @@ function updateTopList(body, obj) {
     if (obj.top10.length < 10) {
         obj.top10.push(body);
     } else {
-        const BIG_NUMBER = 99999999999;
-        var lowest = {"name": "", "score": BIG_NUMBER};
+        var lowest = obj.top10[0];
         for (var i in obj.top10) {
             data = obj.top10[i];
             if (data.score < lowest.score) {
