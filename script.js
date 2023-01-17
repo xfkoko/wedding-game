@@ -197,7 +197,7 @@ window.addEventListener('load', async function() {
             score += 1000;
             resultImage.src = "menus/rightanswer.png";
             showResult = true;
-            playerImage.src = 'groom_frames/animationsf_scaled.png';
+            //playerImage.src = 'groom_frames/animationsf_scaled.png';
         } else if (clicked > 0 ) {
             console.log("Wrong answer!");
             if (questionTime1 === 1) questionTime1 = 2;
@@ -209,7 +209,7 @@ window.addEventListener('load', async function() {
             score -= 1000;
             resultImage.src = "menus/wronganswer.png";
             showResult = true;
-            playerImage.src = 'groom_frames/animationsf_scaled.png';
+            //playerImage.src = 'groom_frames/animationsf_scaled.png';
         }
         else console.log("Click missed answer fields.");
     }
@@ -337,6 +337,18 @@ window.addEventListener('load', async function() {
         tempContext.drawImage(backgroundLayer1, 0, 0, 28806, CANVAS_HEIGHT, 0, 0, 28806, CANVAS_HEIGHT);              
     }
 
+    const playerImage = new Image();
+    playerImage.src = 'groom_frames/animations_scaled.png';
+    var canvasTempPlayer = document.createElement("canvas");
+    canvasTempPlayer.width = 9389;
+    canvasTempPlayer.height = 1083;
+    var tempContextPlayer = canvasTempPlayer.getContext("2d");
+    playerImage.onload = loadImagePlayer;
+
+    function loadImagePlayer(){
+        tempContextPlayer.drawImage(playerImage, 0, 0, 9389, 1083, 0, 0, 9389, 1083);              
+    }
+
     const backgroundLayer2 = new Image();
     backgroundLayer2.src ="background002.png";
 
@@ -346,8 +358,6 @@ window.addEventListener('load', async function() {
     let questionTime2 = 0;
     let questionTime3 = 0;
 
-    const playerImage = new Image();
-    playerImage.src = 'groom_frames/animations_scaled.png';
     const spriteWidth = 361;
     const spriteHeight = 361;
     let frameX = 0;
@@ -517,8 +527,7 @@ window.addEventListener('load', async function() {
         }
         ctx.drawImage(rArrow, R_ARROW_X, R_ARROW_Y);
         ctx.drawImage(lArrow, L_ARROW_X, L_ARROW_Y);
-        ctx.drawImage(playerImage, frameX, frameY * spriteHeight, spriteWidth,
-            spriteHeight, CANVAS_WIDTH/20, CANVAS_HEIGHT/2.4, spriteWidth, spriteHeight);
+        ctx.drawImage(tempContextPlayer.canvas, frameX, frameY * spriteHeight, spriteWidth, spriteHeight, CANVAS_WIDTH/20, CANVAS_HEIGHT/2.4, spriteWidth, spriteHeight);
         if (showResult) {
             if (showCounter < 80) {
                 ctx.drawImage(resultImage, (CANVAS_WIDTH - resultImage.width)/2, (CANVAS_HEIGHT - resultImage.height)/2);
