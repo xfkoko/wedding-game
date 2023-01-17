@@ -326,15 +326,15 @@ window.addEventListener('load', async function() {
 
     const backgroundLayer1 = new Image();
     backgroundLayer1.src ="background001.png";
-    backgroundLayer1.onload = loadImage(backgroundLayer1);
+    backgroundLayer1.onload = loadImageBG;
 
     var canvasTemp = document.createElement("canvas");
     canvasTemp.width = 28806;
     canvasTemp.height = CANVAS_HEIGHT;
     var tempContext = canvasTemp.getContext("2d");
 
-    function loadImage(image){
-        tempContext.drawImage(image, 0, 0, 28806, CANVAS_HEIGHT, 0, 0, 28806, CANVAS_HEIGHT);              
+    function loadImageBG(){
+        tempContext.drawImage(backgroundLayer1, 0, 0, 28806, CANVAS_HEIGHT, 0, 0, 28806, CANVAS_HEIGHT);              
     }
 
     const backgroundLayer2 = new Image();
