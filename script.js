@@ -3,7 +3,7 @@ const BASE_PATH = "http://13.53.123.247:3000";
 
 async function postScore(score, name) {
     console.log(name + ":", score);
-    const response = await fetch(BASE_PATH + "/top10", {
+    const response = await fetch(BASE_PATH + "/newscore", {
         method: 'POST',
         body: JSON.stringify({
             "name": name,
@@ -326,15 +326,15 @@ window.addEventListener('load', async function() {
 
     const backgroundLayer1 = new Image();
     backgroundLayer1.src ="background001.png";
-    backgroundLayer1.onload = loadImage;
+    backgroundLayer1.onload = loadImage(backgroundLayer1);
 
     var canvasTemp = document.createElement("canvas");
     canvasTemp.width = 28806;
     canvasTemp.height = CANVAS_HEIGHT;
     var tempContext = canvasTemp.getContext("2d");
 
-    function loadImage(){
-        tempContext.drawImage(backgroundLayer1, 0, 0, 28806, CANVAS_HEIGHT, 0, 0, 28806, CANVAS_HEIGHT);              
+    function loadImage(image){
+        tempContext.drawImage(image, 0, 0, 28806, CANVAS_HEIGHT, 0, 0, 28806, CANVAS_HEIGHT);              
     }
 
     const backgroundLayer2 = new Image();
