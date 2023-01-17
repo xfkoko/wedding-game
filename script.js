@@ -1,5 +1,5 @@
 //const BASE_PATH = "http://localhost:3000";
-const BASE_PATH = "http://16.170.143.115:3000";
+const BASE_PATH = "http://13.53.123.247:3000";
 
 async function postScore(score, name) {
     console.log(name + ":", score);
