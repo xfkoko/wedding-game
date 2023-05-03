@@ -28,7 +28,6 @@ function updateTopList(body, obj) {
             obj.top10.push(body);
         }
     }
-    
 }
 
 async function getTopListInOrder() {
