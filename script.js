@@ -1,10 +1,15 @@
 //const BASE_PATH = "http://localhost:3000";
 const BASE_PATH = "http://13.51.174.58:3000";
 
-const url_to_font_name = "https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap"
-const font_name = new FontFace('Font Name', `url(${url_to_font_name})`);
-document.fonts.add(font_name);
-await font_name.load();
+async function loadFont() {
+    const url_to_font_name = "https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap"
+    const font_name = new FontFace('Font Name', `url(${url_to_font_name})`);
+    document.fonts.add(font_name);
+    await font_name.load();
+}
+
+loadFont();
+
 
 async function postScore(score, name) {
     console.log(name + ":", score);
