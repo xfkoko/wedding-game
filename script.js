@@ -1,15 +1,5 @@
-//const BASE_PATH = "http://localhost:3000";
-const BASE_PATH = "http://13.51.174.58:3000";
-
-async function loadFont() {
-    const url_to_font_name = "https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap"
-    const font_name = new FontFace('Font Name', `url(${url_to_font_name})`);
-    document.fonts.add(font_name);
-    await font_name.load();
-}
-
-loadFont();
-
+const BASE_PATH = "http://localhost:3000";
+//const BASE_PATH = "http://13.51.174.58:3000";
 
 async function postScore(score, name) {
     console.log(name + ":", score);
@@ -460,7 +450,7 @@ window.addEventListener('load', async function() {
         ctx.drawImage(tempMainMenusContext.canvas, MENU_W + NEW_W, 0, START_W, START_H, w/2 + w/20, h/2 + h/1.8, START_W, START_H);
         ctx.drawImage(tempMainMenusContext.canvas, 0, MENU_H + MENU_H, TOP10_W, TOP10_H, w/50, h/10, TOP10_W, TOP10_H);
         if (playerNameInput.type == "hidden") {
-            ctx.font = "60px Amatic SC";
+            ctx.font = "60px MyFont";
             playerNameInput.value = playerName;
             playerNameInput.type = "text";
             hiscores.style.visibility = "visible";
@@ -506,8 +496,8 @@ window.addEventListener('load', async function() {
             }
         }
         ctx.drawImage(tempContext.canvas, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        ctx.font = "50px Amatic SC";
-        ctx.fillText("X: " + Math.round(-x), 250, 50);
+        ctx.font = "50px MyFont";
+        //ctx.fillText("X: " + Math.round(-x), 250, 50);
         ctx.fillText("Score: " + score, 10, 50);
         if (frameY === 0) {
             divider = 26;
@@ -606,7 +596,7 @@ window.addEventListener('load', async function() {
                 ctx.drawImage(tempMainMenusContext.canvas, MENU_W, MENU_H, MENU_W, MENU_H, w/2, h/2, MENU_W, MENU_H);
             } else {
                 ctx.drawImage(tempMainMenusContext.canvas, 0, MENU_H, MENU_W, MENU_H, w/2, h/2, MENU_W, MENU_H);
-                ctx.font = "60px Amatic SC"
+                ctx.font = "60px MyFont"
                 ctx.fillText(score, CANVAS_WIDTH/2.15, CANVAS_HEIGHT/1.9);
             }
             ctx.drawImage(tempMainMenusContext.canvas, MENU_W, 0, NEW_W, NEW_H, w/1.6, h/0.725, NEW_W, NEW_H);

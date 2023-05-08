@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url('AmaticSC-Regular.ttf');
+}
+
 html, body {
     width: 100vh;
     height: 100vh;
@@ -19,11 +24,11 @@ body {
 }
 #playername {
     position: absolute;
-    font-family: "Amatic SC";
+    font-family: "MyFont";
 }
 #hiscores {
     position: absolute;
-    font-family: "Amatic SC";
+    font-family: "MyFont";
     visibility: visible;
 }
 #position1 {
