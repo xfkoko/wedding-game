@@ -455,7 +455,6 @@ window.addEventListener('load', async function() {
             playerNameInput.type = "text";
             hiscores.style.visibility = "visible";
         }
-        document.getElementById('loading-screen').style.display = 'none';
     }
 
     function gameAnimation() {
@@ -605,5 +604,6 @@ window.addEventListener('load', async function() {
         gameFrame++;
         //console.timeEnd("test")
     }
+    document.getElementById('loading-screen').style.display = 'none';
     startAnimating(60);
 });
