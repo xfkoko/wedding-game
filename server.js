@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 app.use(cors());
-const port = 3000;
+const port = 80;
 app.use(express.static(__dirname));
 
 function updateTopList(body, obj) {
