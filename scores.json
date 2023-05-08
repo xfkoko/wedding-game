@@ -1,8 +1,14 @@
 {
     "top10": [
-        
+        {
+            "name": "Kosti",
+            "score": 125000
+        }
     ],
     "scores": [
-
+        {
+            "name": "Kosti",
+            "score": 125000
+        }
     ]
 }
