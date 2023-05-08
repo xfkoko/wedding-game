@@ -1,10 +1,6 @@
 //const BASE_PATH = "http://localhost:3000";
 const BASE_PATH = "http://13.51.77.33:3000";
 
-window.addEventListener('load', function() {
-    document.getElementById('loading-screen').style.display = 'none';
-});
-
 async function postScore(score, name) {
     console.log(name + ":", score);
     const response = await fetch(BASE_PATH + "/newscore", {
@@ -608,5 +604,6 @@ window.addEventListener('load', async function() {
         gameFrame++;
         //console.timeEnd("test")
     }
+    document.getElementById('loading-screen').style.display = 'none';
     startAnimating(60);
 });
