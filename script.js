@@ -4,7 +4,9 @@ const BASE_PATH = "http://13.51.77.33:3000";
 screen.orientation.addEventListener("change", function(e) {
     var confirmation = confirm("Ruutu käännetty, ladataanko sivu uudellee?");
     if (confirmation) {
-        window.location.reload();
+        setTimeout(function() {
+            window.location.reload();
+        }, 100);
     }
 });
 
