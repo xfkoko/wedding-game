@@ -430,7 +430,6 @@ window.addEventListener('load', async function() {
 
     function animate() {
         requestAnimationFrame(animate);
-        document.getElementById('loading-screen').style.display = 'none';
         now = Date.now();
         elapsed = now - then;
         if (elapsed > fpsInterval) {
@@ -456,6 +455,7 @@ window.addEventListener('load', async function() {
             playerNameInput.type = "text";
             hiscores.style.visibility = "visible";
         }
+        document.getElementById('loading-screen').style.display = 'none';
     }
 
     function gameAnimation() {
