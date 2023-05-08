@@ -1,24 +1,7 @@
 //const BASE_PATH = "http://localhost:3000";
 const BASE_PATH = "http://13.51.77.33:3000";
 
-function lockScreenOrientation() {
-    if (window.screen.orientation) {
-      // Lock the screen orientation to landscape
-      window.screen.orientation.lock("landscape");
-    } else if (window.screen.mozLockOrientation) {
-      // For Firefox browsers
-      window.screen.mozLockOrientation("landscape");
-    } else if (window.screen.msLockOrientation) {
-      // For Microsoft Edge and IE 11
-      window.screen.msLockOrientation("landscape");
-    } else if (window.screen.orientation && window.screen.orientation.lock) {
-      // For other browsers that support the screen.orientation.lock() method
-      window.screen.orientation.lock("landscape").catch(function() {});
-    }
-  }
-  
-  // Call the lockScreenOrientation() function when the page loads
-  window.addEventListener('load', lockScreenOrientation, false);
+screen.orientation.lock('landscape');
 
 async function postScore(score, name) {
     console.log(name + ":", score);
