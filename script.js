@@ -1,15 +1,6 @@
 //const BASE_PATH = "http://localhost:3000";
 const BASE_PATH = "http://13.51.77.33:3000";
 
-screen.orientation.addEventListener("change", function(e) {
-    var confirmation = confirm("Ruutu käännetty, ladataanko sivu uudellee?");
-    if (confirmation) {
-        setTimeout(function() {
-            window.location.reload();
-        }, 100);
-    }
-});
-
 window.addEventListener('load', function() {
     document.getElementById('loading-screen').style.display = 'none';
 });
