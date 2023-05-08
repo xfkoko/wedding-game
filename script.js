@@ -1,5 +1,5 @@
-const BASE_PATH = "http://localhost:3000";
-//const BASE_PATH = "http://13.51.77.33:3000";
+//const BASE_PATH = "http://localhost:3000";
+const BASE_PATH = "http://13.51.77.33:3000";
 
 function lockScreenOrientation() {
     if (window.screen.orientation) {
