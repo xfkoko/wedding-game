@@ -1,5 +1,5 @@
 //const BASE_PATH = "http://localhost:3000";
-const BASE_PATH = "http://13.51.77.33:3000";
+const BASE_PATH = "http://13.53.214.51:3000";
 
 async function postScore(score, name) {
     console.log(name + ":", score);
@@ -156,7 +156,7 @@ window.addEventListener('load', async function() {
 
     let speedScore = 0;
 
-    let score = 20000;
+    let score = 8000;
 
     // { MENU, PLAYING, END} something else?
     let gameState = "MENU";
@@ -297,9 +297,9 @@ window.addEventListener('load', async function() {
             }    
         } else console.log("No arrow in place");
         speedScore = (6-staggerFrames) * 10 + speed;
-        if (speedScore >= 60) {
-            console.log("WOOHOO NOW WE GOING FAST!");
-        } else console.log("Speed Score: ", speedScore);
+        //if (speedScore >= 60) {
+        //    console.log("WOOHOO NOW WE GOING FAST!");
+        //} else console.log("Speed Score: ", speedScore);
     }
 
     async function gameReset(){
@@ -307,7 +307,7 @@ window.addEventListener('load', async function() {
         speedScore = 0;
         frameY = 0;
         staggerFrames = 6;
-        score = 20000;
+        score = 8000;
         x = 0;
         questionTime1 = 0;
         questionTime2 = 0;
@@ -326,7 +326,7 @@ window.addEventListener('load', async function() {
     }
 
     // ONLY FOR DEBUGGING
-    this.window.addEventListener('keydown', function(e) {
+    /*this.window.addEventListener('keydown', function(e) {
         console.log(e.keyCode);
         if (e.keyCode === 32) {
             gameReset();
@@ -340,7 +340,7 @@ window.addEventListener('load', async function() {
         if (e.keyCode === 39) {
             x = -27199;
         }
-    })
+    })*/
 
     const backgroundPart1 = new Image();
     backgroundPart1.src ="backgroundpart001.png";
@@ -496,9 +496,9 @@ window.addEventListener('load', async function() {
             }
         }
         ctx.drawImage(tempContext.canvas, -x, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        ctx.font = "50px MyFont";
+        ctx.font = "60px MyFont";
         //ctx.fillText("X: " + Math.round(-x), 250, 50);
-        ctx.fillText("Score: " + score, 10, 50);
+        ctx.fillText("Score: " + score, 20, 60);
         if (frameY === 0) {
             divider = 26;
         } else {

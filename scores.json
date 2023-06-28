@@ -1,14 +1,30 @@
 {
     "top10": [
         {
-            "name": "Kosti",
-            "score": 125000
+            "name": "Leppu",
+            "score": 1250
+        },
+        {
+            "name": "Suluhoone",
+            "score": 576
+        },
+        {
+            "name": "Suluhoinen",
+            "score": 32
         }
     ],
     "scores": [
         {
-            "name": "Kosti",
-            "score": 125000
+            "name": "Leppu",
+            "score": 1250
+        },
+        {
+            "name": "Suluhoone",
+            "score": 576
+        },
+        {
+            "name": "Suluhoinen",
+            "score": 32
         }
     ]
 }
