@@ -1,5 +1,5 @@
-//const BASE_PATH = "http://localhost:3000";
-const BASE_PATH = "http://13.53.214.51:3000";
+const BASE_PATH = "http://localhost:3000";
+//const BASE_PATH = "http://13.53.214.51:3000";
 
 async function postScore(score, name) {
     console.log(name + ":", score);
@@ -352,7 +352,7 @@ window.addEventListener('load', async function() {
     backgroundPart4.src ="backgroundpart004.png";
 
     const backgroundLayer1 = new Image();
-    backgroundLayer1.src ="background001.png";
+    backgroundLayer1.src ="backgroundsmall.png";
     backgroundLayer1.onload = loadImageBG;
 
     var canvasTemp = document.createElement("canvas");
@@ -361,7 +361,7 @@ window.addEventListener('load', async function() {
     var tempContext = canvasTemp.getContext("2d");
 
     function loadImageBG(){
-        tempContext.drawImage(backgroundLayer1, 0, 0, 28806, CANVAS_HEIGHT, 0, 0, 28806, CANVAS_HEIGHT);
+        tempContext.drawImage(backgroundLayer1, 0, 0, 14403, CANVAS_HEIGHT/2, 0, 0, 28806, CANVAS_HEIGHT);
     }
 
     const playerImage = new Image();
